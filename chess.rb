@@ -1,5 +1,8 @@
+# encoding: utf-8
+
 class Knight
-  attr_reader :position, :team, :symbol
+  attr_reader :team, :symbol
+  attr_accessor :position
   def initialize(position, team, boardname)
     @position = position
     @team = team
@@ -15,7 +18,7 @@ class Knight
     if start != @position
       puts "Your knight is not on that position, so we can't move it."
     elsif board.matrix[destination[0]][destination[1]] != " "
-      if board.matrix[destination[0]][destination[1]].teamcolor?(@team) 
+      if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
       else 
         puts "You capture one of your opponents pieces!"
@@ -54,7 +57,11 @@ class Board
   end
 
   def place_piece(position, team, type)
-    symbol_hash = {king: "K", queen: "Q", rook: "R", bishop: "B", knight: "N", pawn: "p"}
+    if team == "white"
+      symbol_hash = {king: "\u2654", queen: "\u2655", rook: "\u2656", bishop: "\u2657", knight: "\u2658", pawn: "\u2659"}
+    elsif team == "black"
+      symbol_hash = {king: "\u265A", queen: "\u265B", rook: "\u265C", bishop: "\u265D", knight: "\u265E", pawn: "\u265F"}
+    end
     symbol = symbol_hash[type]
     @matrix[position[0]][position[1]] = symbol
   end
@@ -64,23 +71,31 @@ class Board
   end 
 
   def capture_piece(position)
-
+    # this seems difficult to get right. How can I find the correct object instance 
+    # just from the position and the symbol? Decided to freeze the idea of creating a new
+    # class instance for every game piece. Play from manipulating the board instead.
   end
 end
 
 ###############################################################################
 
-class Game
-  def teamcolor?(team)
-    # use self and turn out true in case self is from the given team
+class String
+  def teamcolor
+    if self == "\u2654" || self == "\u2655" || self == "\u2656" || self == "\u2657" || self == "\u2658" || self == "\u2659"
+      "white"
+    else
+      "black"
+    end
   end
 end
 
 board = Board.new
+knight1 = Knight.new([7,1], "white", board)
+knight2 = Knight.new([5,2], "black", board)
 board.display()
-knight = Knight.new([7,1], "black", board)
+knight2.move([5,2], [7,1], board)
 board.display()
-knight.move([7,1], [5,2], board)
+puts "#{knight1.position}"
+knight1.move([7,1], [5,2], board)
 board.display()
-knight.move([5,2], [1,1], board)
-board.display()
+
