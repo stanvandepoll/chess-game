@@ -1,40 +1,29 @@
 # encoding: utf-8
 
-class Knight
-  attr_reader :team, :symbol
-  attr_accessor :position
-  def initialize(position, team, boardname)
-    @position = position
-    @team = team
-    @symbol = :knight
-    boardname.place_piece(@position, @team, @symbol)
-  end
+module Knight
 
-  def move(start, destination, board)
-    unless move_allowed?(start, destination)
+  def self.move(start, destination, team, board)
+
+    unless Knight.move_allowed?(start, destination)
       puts "That move is not allowed by a knight."  
       return nil
     end
-    if start != @position
-      puts "Your knight is not on that position, so we can't move it."
-    elsif board.matrix[destination[0]][destination[1]] != " "
+    
+    if board.matrix[destination[0]][destination[1]] != " "
       if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
       else 
         puts "You capture one of your opponents pieces!"
-        board.capture_piece(destination)
-        @position = destination
         board.remove_piece(start)
-        board.place_piece(@position, @team, self.symbol)
+        board.place_piece(destination, team, :knight)
       end
     else
-      @position = destination
       board.remove_piece(start)
-      board.place_piece(@position, @team, self.symbol)
+      board.place_piece(destination, team, :knight)
     end
   end
 
-  def move_allowed?(start, destination)
+  def self.move_allowed?(start, destination)
     (start[0] - destination[0])**2 + (start[1] - destination[1])**2 == 5
   end
 
@@ -56,6 +45,14 @@ class Board
     end
   end
 
+  def move(start, destination)
+    if @matrix[start[0]][start[1]] == "\u2658"
+      Knight.move(start, destination, "white", self)
+    elsif @matrix[start[0]][start[1]] == "\u265E"
+      Knight.move(start, destination, "black", self)
+    end
+  end
+
   def place_piece(position, team, type)
     if team == "white"
       symbol_hash = {king: "\u2654", queen: "\u2655", rook: "\u2656", bishop: "\u2657", knight: "\u2658", pawn: "\u2659"}
@@ -70,11 +67,6 @@ class Board
     @matrix[position[0]][position[1]] = " "
   end 
 
-  def capture_piece(position)
-    # this seems difficult to get right. How can I find the correct object instance 
-    # just from the position and the symbol? Decided to freeze the idea of creating a new
-    # class instance for every game piece. Play from manipulating the board instead.
-  end
 end
 
 ###############################################################################
@@ -90,12 +82,11 @@ class String
 end
 
 board = Board.new
-knight1 = Knight.new([7,1], "white", board)
-knight2 = Knight.new([5,2], "black", board)
+board.place_piece([7,1], "white", :knight)
+board.place_piece([5,2], "black", :knight)
 board.display()
-knight2.move([5,2], [7,1], board)
+board.move([5,2], [7,1])
 board.display()
-puts "#{knight1.position}"
-knight1.move([7,1], [5,2], board)
+board.move([7,1], [5,2])
 board.display()
 
