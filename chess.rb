@@ -5,6 +5,7 @@ require_relative "rook.rb"
 require_relative "bishop.rb"
 require_relative "queen.rb"
 require_relative "king.rb"
+require_relative "pawn.rb"
 
 ###############################################################################
 
@@ -73,12 +74,13 @@ end
 board = Board.new
 board.place_piece([4,1], "white", :king)
 board.place_piece([3,1], "black", :rook)
+board.place_piece([6,3], "white", :pawn)
 board.display()
-board.move([4,1], [3,2])
+board.move([6,3], [4,3])
 board.display()
-board.move([3,2], [3,3])
+board.move([4,3], [2,3])
 board.display()
-board.move([3,3], [3,1])
+board.move([4,3], [3,3])
 board.display()
-board.move([3,1], [0,1])
+board.move([3,1], [3,3])
 board.display()
