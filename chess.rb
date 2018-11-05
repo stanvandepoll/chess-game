@@ -66,16 +66,17 @@ class Board
   end 
 
   def castling(start, destination, board)
-    puts "We are castling!"
-    if destination[1] > start[1] && start == [7,4]
-      unless King.path_blocked?(start, destination, board) 
+    unless King.path_blocked?(start, destination, board)
+      puts "We are trying to castle!"
+      if destination[1] > start[1] && start == [7,4] && Rook.castling_positions([7,7])
         remove_piece([7,4])
         place_piece([7,6], "white", :king)
         remove_piece([7,7])
         place_piece([7,5], "white", :rook)
+        return true
       end
     end
-    true
+    false
   end
 end
 

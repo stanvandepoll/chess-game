@@ -1,5 +1,11 @@
 module Rook
+  @@castling_positions = {[0,0] => true, [0,7] => true, 
+                          [7,0] => true, [7,7] => true}
 
+  def self.castling_positions(pos)
+    @@castling_positions[pos]
+  end
+  
   def self.move(start, destination, team, board)
 
     unless Rook.move_allowed?(start, destination, board)
@@ -14,13 +20,16 @@ module Rook
         puts "You capture one of your opponents pieces!"
         board.remove_piece(start)
         board.place_piece(destination, team, :rook)
+        castling_check(start)
       end
     else
       board.remove_piece(start)
       board.place_piece(destination, team, :rook)
+      castling_check(start)
     end
   end
 
+  private
   def self.move_allowed?(start, destination, board)
     (return false) if path_blocked?(start, destination, board)
     start[0] == destination[0] || start[1] == destination[1]
@@ -39,5 +48,12 @@ module Rook
       end
     end
     false
+  end
+
+  def self.castling_check(start)
+    if @@castling_positions.keys.include?(start)
+      @@castling_positions[start] = false
+      puts "#{@@castling_positions}"
+    end
   end
 end

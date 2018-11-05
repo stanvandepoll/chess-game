@@ -4,9 +4,10 @@ module King
 
     # castling
     if @@moved[team] == false && start[0] == destination[0] && (start[1] - destination[1]).abs == 2
-        board.castling(start, destination, board)
-        @@moved[team] = true
-        return nil
+        if board.castling(start, destination, board)
+          @@moved[team] = true
+          return nil
+        end
     end
 
     unless King.move_allowed?(start, destination, board)
