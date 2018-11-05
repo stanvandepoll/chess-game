@@ -1,38 +1,15 @@
 # encoding: utf-8
 
-module Knight
-
-  def self.move(start, destination, team, board)
-
-    unless Knight.move_allowed?(start, destination)
-      puts "That move is not allowed by a knight."  
-      return nil
-    end
-    
-    if board.matrix[destination[0]][destination[1]] != " "
-      if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
-        puts "One of your pieces is already on the destination tile."
-      else 
-        puts "You capture one of your opponents pieces!"
-        board.remove_piece(start)
-        board.place_piece(destination, team, :knight)
-      end
-    else
-      board.remove_piece(start)
-      board.place_piece(destination, team, :knight)
-    end
-  end
-
-  def self.move_allowed?(start, destination)
-    (start[0] - destination[0])**2 + (start[1] - destination[1])**2 == 5
-  end
-
-end
+require_relative "knight.rb"
+require_relative "rook.rb"
 
 ###############################################################################
 
 class Board
   attr_accessor :matrix
+  @@symbol_hash_white = {king: "\u2654", queen: "\u2655", rook: "\u2656", bishop: "\u2657", knight: "\u2658", pawn: "\u2659"}
+  @@symbol_hash_black = {king: "\u265A", queen: "\u265B", rook: "\u265C", bishop: "\u265D", knight: "\u265E", pawn: "\u265F"}
+
   def initialize
     @matrix = Array.new(8){ Array.new(8, " ") }
   end
@@ -46,18 +23,23 @@ class Board
   end
 
   def move(start, destination)
-    if @matrix[start[0]][start[1]] == "\u2658"
-      Knight.move(start, destination, "white", self)
-    elsif @matrix[start[0]][start[1]] == "\u265E"
-      Knight.move(start, destination, "black", self)
+    @@symbol_hash_white.each_pair do |symbol, string|
+      if @matrix[start[0]][start[1]] == string
+        eval(symbol.to_s.capitalize).move(start, destination, "white", self)
+      end
+    end
+    @@symbol_hash_black.each_pair do |symbol, string|
+      if @matrix[start[0]][start[1]] == string
+        eval(symbol.to_s.capitalize).move(start, destination, "black", self)
+      end
     end
   end
 
   def place_piece(position, team, type)
     if team == "white"
-      symbol_hash = {king: "\u2654", queen: "\u2655", rook: "\u2656", bishop: "\u2657", knight: "\u2658", pawn: "\u2659"}
+      symbol_hash = @@symbol_hash_white
     elsif team == "black"
-      symbol_hash = {king: "\u265A", queen: "\u265B", rook: "\u265C", bishop: "\u265D", knight: "\u265E", pawn: "\u265F"}
+      symbol_hash = @@symbol_hash_black
     end
     symbol = symbol_hash[type]
     @matrix[position[0]][position[1]] = symbol
@@ -83,10 +65,10 @@ end
 
 board = Board.new
 board.place_piece([7,1], "white", :knight)
-board.place_piece([5,2], "black", :knight)
+board.place_piece([3,1], "black", :rook)
 board.display()
-board.move([5,2], [7,1])
+board.move([3,1], [5,1])
 board.display()
-board.move([7,1], [5,2])
+board.move([5,1], [7,1])
 board.display()
 
