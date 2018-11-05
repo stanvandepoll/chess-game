@@ -3,6 +3,7 @@
 require_relative "knight.rb"
 require_relative "rook.rb"
 require_relative "bishop.rb"
+require_relative "queen.rb"
 
 ###############################################################################
 
@@ -69,11 +70,14 @@ class String
 end
 
 board = Board.new
-board.place_piece([4,1], "white", :bishop)
+board.place_piece([4,1], "white", :queen)
 board.place_piece([3,1], "black", :rook)
 board.display()
 board.move([4,1], [2,3])
 board.display()
 board.move([2,3], [3,3])
 board.display()
-
+board.move([3,3], [3,1])
+board.display()
+board.move([3,1], [1,2])
+board.display()
