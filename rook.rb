@@ -53,7 +53,6 @@ module Rook
   def self.castling_check(start)
     if @@castling_positions.keys.include?(start)
       @@castling_positions[start] = false
-      puts "#{@@castling_positions}"
     end
   end
 end

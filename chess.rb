@@ -16,14 +16,15 @@ class Board
 
   def initialize
     # @matrix = Array.new(8){ Array.new(8, " ") }
-    @matrix = [["\u265C", "\u265E", "\u265D", "\u265B", "\u265A", "\u265D", "\u265E", "\u265C"],
+    # ["\u265C", "\u265E", "\u265D", "\u265B", "\u265A", "\u265D", "\u265E", "\u265C"]
+    @matrix = [["\u265C", " ", " ", " ", "\u265A", " ", " ", "\u265C"],
                Array.new(8, "\u265F"),
                Array.new(8, " "),
                Array.new(8, " "),
                Array.new(8, " "),
                Array.new(8, " "),
                Array.new(8, "\u2659"),
-               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", " ", " ", "\u2656"]]
+               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]]
   end
 
   def display
@@ -74,6 +75,26 @@ class Board
         remove_piece([7,7])
         place_piece([7,5], "white", :rook)
         return true
+      elsif destination[1] < start[1] && start == [7,4] && 
+            Rook.castling_positions([7,0]) && @matrix[7][1] == " "
+        remove_piece([7,4])
+        place_piece([7,2], "white", :king)
+        remove_piece([7,0])
+        place_piece([7,3], "white", :rook)
+        return true
+      elsif destination[1] > start[1] && start == [0,4] && Rook.castling_positions([0,7])
+        remove_piece([0,4])
+        place_piece([0,6], "black", :king)
+        remove_piece([0,7])
+        place_piece([0,5], "black", :rook)
+        return true
+      elsif destination[1] < start[1] && start == [0,4] && 
+            Rook.castling_positions([0,0]) && @matrix[0][1] == " "
+        remove_piece([0,4])
+        place_piece([0,2], "black", :king)
+        remove_piece([0,0])
+        place_piece([0,3], "black", :rook)
+        return true
       end
     end
     false
@@ -93,6 +114,12 @@ class String
 end
 
 board = Board.new
-board.display()
-board.move([7,4], [7,6])
-board.display()
+board.display
+board.move([0,7], [0,6])
+board.display
+board.move([0,6], [0,7])
+board.display
+board.move([0,4], [0,6])
+board.display
+board.move([0,4], [0,2])
+board.display
