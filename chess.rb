@@ -23,6 +23,10 @@ class Board
   end
 
   def move(start, destination)
+    if @matrix[start[0]][start[1]] == " "
+      puts "there is no piece at that position" 
+      return
+    end
     @@symbol_hash_white.each_pair do |symbol, string|
       if @matrix[start[0]][start[1]] == string
         eval(symbol.to_s.capitalize).move(start, destination, "white", self)
@@ -64,11 +68,11 @@ class String
 end
 
 board = Board.new
-board.place_piece([7,1], "white", :knight)
+board.place_piece([5,1], "white", :knight)
 board.place_piece([3,1], "black", :rook)
 board.display()
-board.move([3,1], [5,1])
+board.move([3,1], [7,1])
 board.display()
-board.move([5,1], [7,1])
+board.move([4,1], [7,1])
 board.display()
 
