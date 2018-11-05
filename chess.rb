@@ -23,7 +23,7 @@ class Board
                Array.new(8, " "),
                Array.new(8, " "),
                Array.new(8, "\u2659"),
-               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]]
+               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", " ", " ", "\u2656"]]
   end
 
   def display
@@ -65,6 +65,18 @@ class Board
     @matrix[position[0]][position[1]] = " "
   end 
 
+  def castling(start, destination, board)
+    puts "We are castling!"
+    if destination[1] > start[1] && start == [7,4]
+      unless King.path_blocked?(start, destination, board) 
+        remove_piece([7,4])
+        place_piece([7,6], "white", :king)
+        remove_piece([7,7])
+        place_piece([7,5], "white", :rook)
+      end
+    end
+    true
+  end
 end
 
 ###############################################################################
@@ -80,4 +92,6 @@ class String
 end
 
 board = Board.new
+board.display()
+board.move([7,4], [7,6])
 board.display()

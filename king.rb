@@ -1,6 +1,13 @@
 module King
-
+  @@moved = {"white" => false, "black" => false}
   def self.move(start, destination, team, board)
+
+    # castling
+    if @@moved[team] == false && start[0] == destination[0] && (start[1] - destination[1]).abs == 2
+        board.castling(start, destination, board)
+        @@moved[team] = true
+        return nil
+    end
 
     unless King.move_allowed?(start, destination, board)
       puts "That move is not allowed by a king."  
@@ -19,10 +26,13 @@ module King
       board.remove_piece(start)
       board.place_piece(destination, team, :king)
     end
+    @@moved[team] = true
   end
 
   def self.move_allowed?(start, destination, board)
-    (return false) if path_blocked?(start, destination, board)
+    if path_blocked?(start, destination, board)
+      return false
+    end
     ((start[0] - destination[0])**2 + (start[1] - destination[1])**2) < 3
   end
 
