@@ -15,7 +15,15 @@ class Board
   @@symbol_hash_black = {king: "\u265A", queen: "\u265B", rook: "\u265C", bishop: "\u265D", knight: "\u265E", pawn: "\u265F"}
 
   def initialize
-    @matrix = Array.new(8){ Array.new(8, " ") }
+    # @matrix = Array.new(8){ Array.new(8, " ") }
+    @matrix = [["\u265C", "\u265E", "\u265D", "\u265B", "\u265A", "\u265D", "\u265E", "\u265C"],
+               Array.new(8, "\u265F"),
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, "\u2659"),
+               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]]
   end
 
   def display
@@ -72,15 +80,4 @@ class String
 end
 
 board = Board.new
-board.place_piece([4,1], "white", :king)
-board.place_piece([3,1], "black", :rook)
-board.place_piece([6,3], "white", :pawn)
-board.display()
-board.move([6,3], [4,3])
-board.display()
-board.move([4,3], [2,3])
-board.display()
-board.move([4,3], [3,3])
-board.display()
-board.move([3,1], [3,3])
 board.display()
