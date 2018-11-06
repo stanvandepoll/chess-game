@@ -38,6 +38,11 @@ module Pawn
     else
       @@en_passant = false
     end
+
+    # promotion
+    if destination[0] == 0 || destination[0] == 7
+      promotion(destination, team, board)
+    end
   end
 
   def self.remove_passant
@@ -82,5 +87,17 @@ module Pawn
       end
     end
     false
+  end
+
+  def self.promotion(destination, team, board)
+    board.display
+    puts "Congratulations! Time to promote your pawn."
+    choice = "p"
+    until choice.match(/[QKBR]/) do
+      puts "Please type Q, K, B or R (for Queen, Knight, Bishop or Rook)."
+      choice = gets.chomp
+    end
+    type_hash = {"Q" => :queen, "K" => :knight, "B" => :bishop, "R" => :rook}
+    board.place_piece(destination, team, type_hash[choice])
   end
 end

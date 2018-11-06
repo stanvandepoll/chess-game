@@ -18,13 +18,13 @@ class Board
     # @matrix = Array.new(8){ Array.new(8, " ") }
     # ["\u265C", "\u265E", "\u265D", "\u265B", "\u265A", "\u265D", "\u265E", "\u265C"]
     @matrix = [["\u265C", " ", " ", " ", "\u265A", " ", " ", "\u265C"],
-               Array.new(8, "\u265F"),
-               Array.new(8, " "),
-               Array.new(8, "\u265F"),
-               Array.new(8, " "),
-               Array.new(8, " "),
                Array.new(8, "\u2659"),
-               ["\u2656", "\u2658", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]]
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, " "),
+               Array.new(8, "\u265F"),
+               ["\u2656", " ", "\u2657", "\u2655", "\u2654", "\u2657", "\u2658", "\u2656"]]
   end
 
   def display
@@ -115,13 +115,13 @@ end
 
 board = Board.new
 board.display
-board.move([6,2], [4,2])
+board.move([1,2], [0,2])
 board.display
-board.move([3,2], [4,2])
+board.move([0,2], [3,2])
 board.display
-board.move([3,3], [4,2])
+board.move([3,2], [5,4])
 board.display
-board.move([6,3], [4,3])
+board.move([6,1], [7,1])
 board.display
-board.move([4,2], [5,3])
+board.move([7,1], [5,2])
 board.display
