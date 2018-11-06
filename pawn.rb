@@ -41,13 +41,17 @@ module Pawn
   def self.move_allowed?(start, destination, team, board)
     (return false) if path_blocked?(start, destination, board)
     if team == "white"
-      (start[0] - destination[0] == 1 && start[1] == destination[1]) ||
-      (start[0] == 6 && start[0] - destination[0] == 2) ||
+      (start[0] - destination[0] == 1 && start[1] == destination[1]) &&
+      board.matrix[destination[0]][destination[1]] == " " ||
+      (start[0] == 6 && start[0] - destination[0] == 2) && 
+      board.matrix[destination[0]][destination[1]] == " " ||
       (start[0] - destination[0] == 1 && (destination[1] - start[1]).abs == 1 &&
       board.matrix[destination[0]][destination[1]] != " ")
     elsif team == "black"
-      (start[0] - destination[0] == -1 && start[1] == destination[1]) ||
-      (start[0] == 1 && start[0] - destination[0] == -2) ||
+      (start[0] - destination[0] == -1 && start[1] == destination[1]) &&
+      board.matrix[destination[0]][destination[1]] == " " ||
+      (start[0] == 1 && start[0] - destination[0] == -2) &&
+      board.matrix[destination[0]][destination[1]] == " " ||
       (start[0] - destination[0] == -1 && (destination[1] - start[1]).abs == 1 &&
       board.matrix[destination[0]][destination[1]] != " ")
     end

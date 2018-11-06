@@ -20,7 +20,7 @@ class Board
     @matrix = [["\u265C", " ", " ", " ", "\u265A", " ", " ", "\u265C"],
                Array.new(8, "\u265F"),
                Array.new(8, " "),
-               Array.new(8, " "),
+               Array.new(8, "\u265F"),
                Array.new(8, " "),
                Array.new(8, " "),
                Array.new(8, "\u2659"),
@@ -115,11 +115,13 @@ end
 
 board = Board.new
 board.display
-board.move([0,7], [0,6])
+board.move([6,2], [4,2])
 board.display
-board.move([0,6], [0,7])
+board.move([3,2], [4,2])
 board.display
-board.move([0,4], [0,6])
+board.move([3,3], [4,2])
 board.display
-board.move([0,4], [0,2])
+board.move([6,3], [4,3])
+board.display
+board.move([4,2], [5,3])
 board.display
