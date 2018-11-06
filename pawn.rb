@@ -11,14 +11,22 @@ module Pawn
     if board.matrix[destination[0]][destination[1]] != " "
       if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
+        return nil
       else 
         puts "You capture one of your opponents pieces!"
         board.remove_piece(start)
         board.place_piece(destination, team, :pawn)
       end
     else
-      board.remove_piece(start)
-      board.place_piece(destination, team, :pawn)
+      if destination == @@en_passant
+        puts "En passant!"
+        board.remove_piece(start)
+        board.place_piece(destination, team, :pawn)
+        destination[0] == 5 ? board.remove_piece([4, destination[1]]) : board.remove_piece([3, destination[1]])
+      else
+        board.remove_piece(start)
+        board.place_piece(destination, team, :pawn)
+      end
     end
 
     # en passant. There is maximum one en passant position possible at a time and
@@ -41,19 +49,23 @@ module Pawn
   def self.move_allowed?(start, destination, team, board)
     (return false) if path_blocked?(start, destination, board)
     if team == "white"
-      (start[0] - destination[0] == 1 && start[1] == destination[1]) &&
+      start[0] - destination[0] == 1 && start[1] == destination[1] &&
       board.matrix[destination[0]][destination[1]] == " " ||
-      (start[0] == 6 && start[0] - destination[0] == 2) && 
+
+      start[0] == 6 && start[0] - destination[0] == 2 && 
       board.matrix[destination[0]][destination[1]] == " " ||
-      (start[0] - destination[0] == 1 && (destination[1] - start[1]).abs == 1 &&
-      board.matrix[destination[0]][destination[1]] != " ")
+
+      start[0] - destination[0] == 1 && (destination[1] - start[1]).abs == 1 &&
+      (board.matrix[destination[0]][destination[1]] != " " || destination == @@en_passant)
     elsif team == "black"
-      (start[0] - destination[0] == -1 && start[1] == destination[1]) &&
+      start[0] - destination[0] == -1 && start[1] == destination[1] &&
       board.matrix[destination[0]][destination[1]] == " " ||
-      (start[0] == 1 && start[0] - destination[0] == -2) &&
+
+      start[0] == 1 && start[0] - destination[0] == -2 &&
       board.matrix[destination[0]][destination[1]] == " " ||
-      (start[0] - destination[0] == -1 && (destination[1] - start[1]).abs == 1 &&
-      board.matrix[destination[0]][destination[1]] != " ")
+
+      start[0] - destination[0] == -1 && (destination[1] - start[1]).abs == 1 &&
+      (board.matrix[destination[0]][destination[1]] != " " || destination == @@en_passant)
     end
   end
 
