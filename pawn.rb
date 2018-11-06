@@ -1,4 +1,5 @@
 module Pawn
+  @@en_passant = false
 
   def self.move(start, destination, team, board)
 
@@ -6,7 +7,7 @@ module Pawn
       puts "That move is not allowed with a pawn."  
       return nil
     end
-    
+
     if board.matrix[destination[0]][destination[1]] != " "
       if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
@@ -19,7 +20,23 @@ module Pawn
       board.remove_piece(start)
       board.place_piece(destination, team, :pawn)
     end
+
+    # en passant. There is maximum one en passant position possible at a time and
+    # it is always reset after the piece movement(s) of the following turn.
+    if destination[0] - start[0] == -2
+      @@en_passant = [5, start[1]]
+    elsif destination[0] - start[0] == 2
+      @@en_passant = [2, start[1]]
+    else
+      @@en_passant = false
+    end
   end
+
+  def self.remove_passant
+    @@en_passant = false
+  end
+
+  private
 
   def self.move_allowed?(start, destination, team, board)
     (return false) if path_blocked?(start, destination, board)

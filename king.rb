@@ -18,6 +18,7 @@ module King
     if board.matrix[destination[0]][destination[1]] != " "
       if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
+        return nil
       else 
         puts "You capture one of your opponents pieces!"
         board.remove_piece(start)
@@ -28,6 +29,7 @@ module King
       board.place_piece(destination, team, :king)
     end
     @@moved[team] = true
+    Pawn.remove_passant
   end
 
   def self.move_allowed?(start, destination, board)

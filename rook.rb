@@ -16,6 +16,7 @@ module Rook
     if board.matrix[destination[0]][destination[1]] != " "
       if board.matrix[destination[0]][destination[1]].teamcolor == board.matrix[start[0]][start[1]].teamcolor
         puts "One of your pieces is already on the destination tile."
+        return nil
       else 
         puts "You capture one of your opponents pieces!"
         board.remove_piece(start)
@@ -27,6 +28,7 @@ module Rook
       board.place_piece(destination, team, :rook)
       castling_check(start)
     end
+    Pawn.remove_passant
   end
 
   private
